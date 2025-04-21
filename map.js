@@ -16,73 +16,86 @@ let initialLeft = 0;
 let initialTop = 0;
 
 
-const toggleButton = document.getElementById('toggle-container');
+const toggleButtons = document.getElementsByClassName('toggle-container');
 const container = document.querySelector('.container');
 const anotacoes = document.getElementById('essential-info2');
 const essentialInfo = document.getElementById('essential-info');
 const playerContainer = document.querySelector('.player-container');
 const barrafichas = document.getElementById('barra-fichas');
 const toggleBgBtn = document.getElementById('toggle-bg-interaction');
+const toggleOpcBtn = document.getElementById('toggle-barreira-opacity');
+const toggleZoom = document.getElementById('zoom-controls');
 const chat = document.getElementById("chat-container");
+const toggleButton = document.getElementById('togglecontainer');
 
 let hidden = false;
 let backgroundChecked = true; // ← Essa flag deve ser controlada por algum checkbox ou opção no menu.
+Array.from(toggleButtons).forEach(btn => {
+  btn.addEventListener('click', () => {
+    hidden = !hidden;
 
-toggleButton.addEventListener('click', () => {
-  hidden = !hidden;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    // Esconde apenas em dispositivos não móveis
+    container.style.display = hidden ? 'none' : 'block';
+    barrafichas.style.display = hidden ? 'flex' : 'none';
 
-  // Esconde apenas em dispositivos não móveis
-  container.style.display = hidden ? 'none' : 'block';
-  barrafichas.style.display = hidden ? 'flex' : 'none';
-
-  if (window.totalFichas < 2) {
-    barrafichas.style.display = 'none';
-  }
-
-  if (!isMobile) {
-    anotacoes.style.display = hidden ? 'none' : 'block';
-    playerContainer.style.display = hidden ? 'none' : 'flex';
-  }
-
-  // Tornar vertical apenas em dispositivos não móveis
-  if (!isMobile) {
-    essentialInfo.classList.toggle('vertical');
-    chat.classList.toggle('map');
-  }
-
-  // IDs das barras de preenchimento
-  const barras = [
-    { barraId: 'status-bar-vida1', valor: personagem.vida, max: personagem.vidaMax },
-    { barraId: 'status-bar-eter1', valor: personagem.eter, max: personagem.eterMax },
-    { barraId: 'status-bar-defesa1', valor: personagem.defesa, max: personagem.defesaMax },
-    { barraId: 'status-bar-sanidade1', valor: personagem.sanidade, max: personagem.sanidadeMax }
-  ];
-
-  barras.forEach(({ barraId, valor, max }) => {
-    const barra = document.getElementById(barraId);
-    const containerBarra = barra.parentElement;
-
-    if (!isMobile) {
-      if (essentialInfo.classList.contains('vertical')) {
-        containerBarra.classList.add('vertical');
-      } else {
-        containerBarra.classList.remove('vertical');
-      }
+    if (window.admincheck) {
+      toggleBgBtn.style.display = hidden ? 'flex' : 'none';
+      toggleOpcBtn.style.display = hidden ? 'flex' : 'none';
     }
 
-    atualizarBarra(barraId, valor, max);
+    toggleButton.style.display = hidden ? 'flex' : 'none';
+
+    toggleZoom.style.display = hidden ? 'flex' : 'none';
+
+    if (window.totalFichas < 2) {
+      barrafichas.style.display = 'none';
+    }
+
+    if (!isMobile) {
+      anotacoes.style.display = hidden ? 'none' : 'block';
+      playerContainer.style.display = hidden ? 'none' : 'flex';
+    }
+
+    // Tornar vertical apenas em dispositivos não móveis
+    if (!isMobile) {
+      essentialInfo.classList.toggle('vertical');
+      chat.classList.toggle('map');
+    }
+
+    // IDs das barras de preenchimento
+    const barras = [
+      { barraId: 'status-bar-vida1', valor: personagem.vida, max: personagem.vidaMax },
+      { barraId: 'status-bar-eter1', valor: personagem.eter, max: personagem.eterMax },
+      { barraId: 'status-bar-defesa1', valor: personagem.defesa, max: personagem.defesaMax },
+      { barraId: 'status-bar-sanidade1', valor: personagem.sanidade, max: personagem.sanidadeMax }
+    ];
+
+    barras.forEach(({ barraId, valor, max }) => {
+      const barra = document.getElementById(barraId);
+      const containerBarra = barra.parentElement;
+
+      if (!isMobile) {
+        if (essentialInfo.classList.contains('vertical')) {
+          containerBarra.classList.add('vertical');
+        } else {
+          containerBarra.classList.remove('vertical');
+        }
+      }
+
+      atualizarBarra(barraId, valor, max);
+    });
+
+    toggleButton.innerHTML = hidden
+      ? '<i class="fa-solid fa-arrows-to-eye"></i>'
+      : '<i class="fa-solid fa-eye-slash"></i>';
+
+    // 🔽 Scrolla o chat pro final se ele estiver visível
+    if (hidden) {
+      scrollChatParaFim();
+    }
   });
-
-  toggleButton.innerHTML = hidden
-    ? '<i class="fa-solid fa-arrows-to-eye"></i>'
-    : '<i class="fa-solid fa-eye-slash"></i>';
-
-  // 🔽 Scrolla o chat pro final se ele estiver visível
-  if (hidden) {
-    scrollChatParaFim();
-  }
 });
 
 
