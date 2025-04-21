@@ -1032,10 +1032,14 @@ textarea:focus {
   }
 
   #essential-info img {
-    width: 80px;
-    height: 80px;
+    width: 80px !important;
+    height: 80px !important;
     object-fit: cover;
     border-radius: 8px;
+  }
+
+  #essential-info label {
+    display: flex;
   }
 
   #essential-info .text-section {
