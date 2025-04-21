@@ -635,7 +635,7 @@ textarea:focus {
 
 @media (max-height: 1000px) {
   #essential-info #status-img{
-    aspect-ratio: 1 / 0.925; /* Garante que a imagem fique quadrada */
+    aspect-ratio: 1 / 0.875; /* Garante que a imagem fique quadrada */
   }
   #essential-info label{
     font-size: 10px;
@@ -657,11 +657,13 @@ textarea:focus {
 /* Container geral vertical */
 #essential-info.vertical {
   top: 50vh;
+  left: 0.5vw;
+  transform: translateY(-50%);
   position: fixed;
-  left: 0.5vw; /* Isso garante que gruda na borda esquerda */
-  margin: 0; /* Remove qualquer espaçamento externo */
-  padding: 0; /* Remove qualquer espaçamento interno */  height: auto;
-  width: 4vw; /* ou use 5vw se quiser responsivo */
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 4vw;
   background-color: transparent;
   border: none;
   border-radius: 8px;
